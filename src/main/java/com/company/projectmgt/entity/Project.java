@@ -30,9 +30,9 @@ public class Project {
     @ManyToOne(fetch = FetchType.LAZY)
     private User manager;
 
-    @Column(name = "DESCRITPTION")
+    @Column(name = "DESCRIPTION")
     @Lob
-    private String descritption;
+    private String description;
 
     @Composition
     @OneToMany(mappedBy = "project")
@@ -46,12 +46,12 @@ public class Project {
         this.tasks = tasks;
     }
 
-    public String getDescritption() {
-        return descritption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescritption(String descritption) {
-        this.descritption = descritption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public User getManager() {

@@ -19,7 +19,7 @@
     <layout>
         <formLayout id="form" dataContainer="projectDc">
             <textField id="nameField" property="name"/>
-            <textArea id="descritptionField" height="9.5em" property="descritption"/>
+            <textArea id="descritptionField" height="9.5em" property="description"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>
