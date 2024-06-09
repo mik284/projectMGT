@@ -23,13 +23,13 @@
     <layout>
         <formLayout id="form" dataContainer="projectDc">
             <textField id="nameField" property="name"/>
-            <textArea id="descritptionField" height="9.5em" property="description"/>
             <entityPicker property="manager">
                 <actions>
                     <action id="entityLookup" type="entity_lookup"/>
                     <action id="entityClear" type="entity_clear"/>
                 </actions>
             </entityPicker>
+            <textArea id="descritptionField" height="9.5em" property="description"/>
         </formLayout>
         <hbox id="buttonsPanel" classNames="buttons-panel">
             <button action="tasksDataGrid.create"/>
