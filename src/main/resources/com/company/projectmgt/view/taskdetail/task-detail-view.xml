@@ -37,7 +37,8 @@
             <select property="priority">
             </select>
             <textField property="estimation"/>
-            <textArea property="description" height="10em"/>
+            <textArea property="description" height="10em" minLength="500" valueChangeMode="EAGER"
+                      id="descriptionField"/>
 
 
         </formLayout>
