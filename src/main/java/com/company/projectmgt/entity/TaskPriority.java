@@ -7,7 +7,9 @@ import org.springframework.lang.Nullable;
 
 public enum TaskPriority implements EnumClass<String> {
 
-    ;
+    LOW("A"),
+    MEDIUM("B"),
+    HIGH("C");
 
     private final String id;
 
