@@ -14,7 +14,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="MANAGER_ID" type="UUID"/>
-            <column name="DESCRITPTION" type="CLOB"/>
+            <column name="DESCRIPTION" type="CLOB"/>
         </createTable>
     </changeSet>
     <changeSet id="2" author="projectMGT">
