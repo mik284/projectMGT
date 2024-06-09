@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @JmixEntity
@@ -20,6 +21,10 @@ public class TimeEntry {
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
+
+    @Column(name = "ENTRY_DATE", nullable = false)
+    @NotNull
+    private LocalDateTime entryDate;
 
     @JoinColumn(name = "TASK_ID")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,6 +44,14 @@ public class TimeEntry {
     @Column(name = "DESCRIPTION")
     @Lob
     private String description;
+
+    public LocalDateTime getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(LocalDateTime entryDate) {
+        this.entryDate = entryDate;
+    }
 
     public String getDescription() {
         return description;
