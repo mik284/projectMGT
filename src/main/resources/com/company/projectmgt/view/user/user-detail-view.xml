@@ -17,6 +17,7 @@
         <dataLoadCoordinator auto="true"/>
     </facets>
     <layout>
+        <image id="avatar" dataContainer="userDc" height="200px" width="200px" property="avatar"/>
         <formLayout id="form" dataContainer="userDc">
             <textField id="usernameField" property="username" readOnly="true"/>
             <passwordField id="passwordField"
