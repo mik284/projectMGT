@@ -20,7 +20,6 @@
     <layout>
         <formLayout id="taskForm" dataContainer="taskDc">
             <textField id="nameField" property="name"/>
-
             <entityPicker property="project">
                 <actions>
                     <action id="entityLookup" type="entity_lookup"/>
@@ -39,8 +38,12 @@
             <textField property="estimation"/>
             <textArea property="description" height="10em" minLength="500" valueChangeMode="EAGER"
                       id="descriptionField"/>
-
-
+            <fileStorageUploadField id="attachmentField"
+                                    property="attachment"
+                                    fileNameVisible="true"
+                                    clearButtonVisible="true"
+                                    maxFileSize="10000000"
+                                    uploadIcon="vaadin:upload"/>
         </formLayout>
         <hbox id="hbox">
             <button id="detailSaveCloseButton" action="detailSaveClose"/>
