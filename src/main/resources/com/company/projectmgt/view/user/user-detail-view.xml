@@ -32,6 +32,8 @@
             <textField id="emailField" property="email"/>
             <comboBox id="timeZoneField" property="timeZoneId"/>
             <checkbox id="activeField" property="active"/>
+            <fileUploadField id="avatarField" property="avatar" clearButtonVisible="true" fileNameVisible="true"
+                             uploadIcon="vaadin:upload"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>
