@@ -1,6 +1,5 @@
 package com.company.projectmgt.entity;
 
-import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.JmixId;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
@@ -11,6 +10,8 @@ public class ProjectStats {
     @JmixId
     private UUID id;
 
+    private Integer difference;
+
     private String projectName;
 
     private Integer tasksCount;
@@ -18,6 +19,14 @@ public class ProjectStats {
     private Integer plannedEfforts;
 
     private Integer actualEfforts;
+
+    public Integer getDifference() {
+        return difference;
+    }
+
+    public void setDifference(Integer difference) {
+        this.difference = difference;
+    }
 
     public Integer getActualEfforts() {
         return actualEfforts;
