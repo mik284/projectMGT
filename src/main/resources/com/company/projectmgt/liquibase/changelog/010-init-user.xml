@@ -75,5 +75,36 @@
         </insert>
 
     </changeSet>
+    <changeSet id="5" author="manasseschege">
+        <createTable tableName="EMAIL_SENDING_MESSAGE">
+            <column name="ID" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ADDRESS_TO" type="VARCHAR(255)"/>
+            <column name="ATTACHMENTS_NAME" type="TEXT"/>
+            <column name="ATTEMPTS_LIMIT" type="INTEGER"/>
+            <column name="ATTEMPTS_MADE" type="INTEGER"/>
+            <column name="ADDRESS_BCC" type="TEXT"/>
+            <column name="BODY_CONTENT_TYPE" type="VARCHAR(255)"/>
+            <column name="ADDRESS_CC" type="TEXT"/>
+            <column name="CONTENT_TEXT" type="TEXT"/>
+            <column name="CONTENT_TEXT_FILE" type="TEXT"/>
+            <column name="CREATE_TS" type="TIMESTAMP"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="DATE_SENT" type="TIMESTAMP"/>
+            <column name="DEADLINE" type="TIMESTAMP"/>
+            <column name="DELETE_TS" type="TIMESTAMP"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="ADDRESS_FROM" type="VARCHAR(255)"/>
+            <column name="EMAIL_HEADERS" type="TEXT"/>
+            <column name="IMPORTANT" type="BOOLEAN"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="SUBJECT" type="VARCHAR(255)"/>
+            <column name="SYS_TENANT_ID" type="VARCHAR(255)"/>
+            <column name="UPDATE_TS" type="TIMESTAMP"/>
+            <column name="UPDATED_BY" type="VARCHAR(255)"/>
+            <column name="VERSION" type="INTEGER"/>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

@@ -8,5 +8,5 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: projectmgt
     ports:
-      - "5432:5432"
+      - "5433:5432"
     restart: always
