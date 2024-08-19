@@ -16,9 +16,8 @@ import io.jmix.email.EmailException;
 import io.jmix.email.EmailInfo;
 import io.jmix.email.EmailInfoBuilder;
 import io.jmix.email.Emailer;
-import java.time.temporal.ChronoUnit;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -99,7 +98,7 @@ public class UserService {
             otp.setOtpCode(otpCode);
             otp.setPurpose("login");
             otp.setMemberId(existingUser);
-            otp.setExpirationTime(LocalDateTime.now().plusMinutes(5));
+            otp.setExpirationTime(new Date(System.currentTimeMillis() + 30 * 60 * 1000));
 
             try {
                 sendOtpToUser(existingUser.getEmail(), otpCode);
@@ -131,54 +130,6 @@ public class UserService {
 
         return responseWrapper;
     }
-
-//    @RestMethod
-//    public ResponseWrapper<?> verifyOtp(OtpDto otpDto) {
-//        ResponseWrapper<?> responseWrapper = new ResponseWrapper<>();
-//        int enteredOtp = otpDto.getOtp();
-//        try {
-//            Member existingUser = dataManager.load(Member.class)
-//                    .query("select m from Member_ m where m.username = :username")
-//                    .parameter("username", otpDto.getUserName())
-//                    .optional()
-//                    .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//            // Load the OTP associated with the member and purpose
-//            Otp otp = dataManager.load(Otp.class)
-//                    .query("select o from Otp o where o.memberId = :memberId and o.purpose = 'login' and o.otpUsed = false")
-//                    .parameter("memberId", existingUser)
-//                    .optional()
-//                    .orElseThrow(() -> new RuntimeException("OTP not found or already used"));
-//
-//            // Check if the OTP has expired
-//
-//            if (LocalDateTime.now().isAfter(otp.getExpirationTime())) {
-//                otp.setOtpUsed(true); // Mark OTP as used since it's expired
-//                dataManager.save(otp);
-//                responseWrapper.setCode(410); // 410 Gone
-//                responseWrapper.setMessage("OTP has expired");
-//            } else if (otp.getOtpCode().equals(enteredOtp)) {
-//                otp.setOtpUsed(true); // Mark OTP as used
-//                dataManager.save(otp);
-//                responseWrapper.setCode(200);
-//                responseWrapper.setMessage("OTP verified successfully");
-//            } else {
-//                responseWrapper.setCode(401); // Unauthorized
-//                responseWrapper.setMessage("Invalid OTP");
-//            }
-//
-//        } catch (RuntimeException e) {
-//            responseWrapper.setCode(404);
-//            responseWrapper.setMessage(e.getMessage());
-//        } catch (Exception e) {
-//            responseWrapper.setCode(500);
-//            responseWrapper.setMessage("An error occurred during OTP verification. Please try again later.");
-//            // Log the exception for debugging
-//            // logger.error("Error during OTP verification process", e);
-//        }
-//
-//        return responseWrapper;
-//    }
 
     @RestMethod
     public ResponseWrapper<Boolean> verifyOtp(OtpDto otpDto) {
@@ -236,7 +187,7 @@ public class UserService {
             otp.setOtpCode(otpCode);
             otp.setPurpose("password_reset");
             otp.setMemberId(user);
-            otp.setCreatedDate(OffsetDateTime.now());
+
 
             try {
                 sendOtpToUser(user.getEmail(), otpCode);
@@ -282,18 +233,30 @@ public class UserService {
         return responseWrapper;
     }
 
+
+
     private boolean isOtpExpired(Otp otp) {
+        log.debug("Entering isOtpExpired method");
+        try {
+            Date expirationTime = otp.getExpirationTime();
+            log.debug("Expiration time: " + expirationTime);
+            log.debug("Expiration time class: " + (expirationTime != null ? expirationTime.getClass().getName() : "null"));
 
-        LocalDateTime expirationTime = otp.getExpirationTime();
-        log.info(expirationTime);
+            if (expirationTime == null) {
+                log.debug("Expiration time is null, considering OTP expired");
+                return true;
+            }
 
-        if (expirationTime == null) {
-            return true;
+            boolean isExpired = expirationTime.before(new Date());
+            log.debug("Is OTP expired? " + isExpired);
+            return isExpired;
+        } catch (Exception e) {
+            log.error("Exception in isOtpExpired method", e);
+            return true; // Assume expired on error
+        } finally {
+            log.debug("Exiting isOtpExpired method");
         }
-        log.info(LocalDateTime.now().isAfter(expirationTime));
-        return LocalDateTime.now().isAfter(expirationTime);
     }
-
 
     @RestMethod
     public ResponseWrapper<List<Member>> getAllUsers() {

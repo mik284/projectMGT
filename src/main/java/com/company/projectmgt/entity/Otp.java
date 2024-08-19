@@ -11,8 +11,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.Date;
 
 @JmixEntity
 @Table(name = "OTP", indexes = {
@@ -30,7 +30,7 @@ public class Otp {
     private Integer otpCode;
 
     @Column(name = "EXPIRATION_TIME")
-    private LocalDateTime expirationTime;
+    private Date expirationTime;
 
     @Column(name = "PURPOSE", nullable = false, length = 50)
     @NotNull
@@ -63,6 +63,14 @@ public class Otp {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     private Member memberId;
 
+    public void setExpirationTime(Date expirationTime) {
+        this.expirationTime = expirationTime;
+    }
+
+    public Date getExpirationTime() {
+        return expirationTime;
+    }
+
     public void setCreatedDate(OffsetDateTime createdDate) {
         this.createdDate = createdDate;
     }
@@ -86,14 +94,6 @@ public class Otp {
 
     public void setOtpCode(Integer otpCode) {
         this.otpCode = otpCode;
-    }
-
-    public LocalDateTime getExpirationTime() {
-        return expirationTime;
-    }
-
-    public void setExpirationTime(LocalDateTime expirationTime) {
-        this.expirationTime = expirationTime;
     }
 
     public String getPurpose() {
