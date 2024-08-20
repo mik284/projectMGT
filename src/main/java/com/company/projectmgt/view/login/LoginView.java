@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Route(value = "login")
+@Route(value = "loginv")
 @ViewController("LoginView")
 @ViewDescriptor("login-view.xml")
 public class LoginView extends StandardView implements LocaleChangeObserver {
@@ -43,7 +43,7 @@ public class LoginView extends StandardView implements LocaleChangeObserver {
     @Autowired
     private LoginViewSupport loginViewSupport;
 
-    @Autowired
+    @ViewComponent
     private MessageBundle messageBundle;
 
     @Autowired
