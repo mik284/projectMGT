@@ -132,15 +132,17 @@ public class UserService {
     }
 
     @RestMethod
-    public ResponseWrapper<Boolean> verifyOtp(OtpDto otpDto) {
-        ResponseWrapper<Boolean> responseWrapper = new ResponseWrapper<>();
+    public ResponseWrapper<?> verifyOtp(OtpDto otpDto) {
+        ResponseWrapper<Object> responseWrapper = new ResponseWrapper<>();
         try {
+            // Fetch user
             Member user = dataManager.load(Member.class)
                     .query("select m from Member_ m where m.username = :username")
                     .parameter("username", otpDto.getUserName())
                     .optional()
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
+            // Fetch OTP
             Otp otp = dataManager.load(Otp.class)
                     .query("select o from Otp o where o.memberId = :memberId and o.otpUsed = false")
                     .parameter("memberId", user)
@@ -148,26 +150,38 @@ public class UserService {
                     .optional()
                     .orElseThrow(() -> new RuntimeException("No valid OTP found"));
 
-            if (otp.getOtpCode() == otpDto.getOtp() && !isOtpExpired(otp)) {
+            // Verify OTP
+            if (otp.getOtpCode().equals(otpDto.getOtp()) && !isOtpExpired(otp)) {
                 otp.setOtpUsed(true);
                 dataManager.save(otp);
+
+                // Create successful response
                 responseWrapper.setCode(200);
                 responseWrapper.setMessage("OTP verified successfully");
-                responseWrapper.setData(true);
+                responseWrapper.setData(user);
             } else {
+                // Create response for invalid or expired OTP
                 responseWrapper.setCode(400);
                 responseWrapper.setMessage("Invalid or expired OTP");
-                responseWrapper.setData(false);
+                responseWrapper.setData(null);
             }
         } catch (RuntimeException e) {
+            // Log and set response for runtime exceptions
+            log.error("RuntimeException: " + e.getMessage(), e);
             responseWrapper.setCode(404);
             responseWrapper.setMessage(e.getMessage());
-            responseWrapper.setData(false);
+            responseWrapper.setData(null);  // Explicitly set to null if no data
         } catch (Exception e) {
+            // Log and set response for general exceptions
+            log.error("Exception: " + e.getMessage(), e);
             responseWrapper.setCode(500);
             responseWrapper.setMessage("An error occurred during OTP verification");
-            responseWrapper.setData(false);
+            responseWrapper.setData(null);  // Explicitly set to null if no data
         }
+
+        // Update timestamp to current time
+        responseWrapper.setTimestamp(new Date().getTime());
+
         return responseWrapper;
     }
 
@@ -208,30 +222,6 @@ public class UserService {
         return responseWrapper;
     }
 
-    @RestMethod
-    public ResponseWrapper<?> resetPassword(OtpDto otpDto, String newPassword) {
-        ResponseWrapper<?> responseWrapper = new ResponseWrapper<>();
-        try {
-            ResponseWrapper<Boolean> verificationResponse = verifyOtp(otpDto);
-            if (verificationResponse.getCode() == 200) {
-                Member user = dataManager.load(Member.class)
-                        .query("select m from Member_ m where m.username = :username")
-                        .parameter("username", otpDto.getUserName())
-                        .one();
-                user.setPassword(newPassword); // You should hash this password before saving
-                dataManager.save(user);
-                responseWrapper.setCode(200);
-                responseWrapper.setMessage("Password reset successfully");
-            } else {
-                responseWrapper.setCode(verificationResponse.getCode());
-                responseWrapper.setMessage(verificationResponse.getMessage());
-            }
-        } catch (Exception e) {
-            responseWrapper.setCode(500);
-            responseWrapper.setMessage("An error occurred during password reset. Please try again later.");
-        }
-        return responseWrapper;
-    }
 
 
 

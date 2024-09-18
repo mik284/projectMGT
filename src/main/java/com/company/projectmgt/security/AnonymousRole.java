@@ -23,4 +23,5 @@ public interface AnonymousRole {
     @EntityAttributePolicy(entityClass = Otp.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = Otp.class, actions = EntityPolicyAction.ALL)
     void otp();
+
 }

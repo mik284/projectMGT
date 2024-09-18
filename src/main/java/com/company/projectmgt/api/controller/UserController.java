@@ -3,21 +3,20 @@ package com.company.projectmgt.api.controller;
 import com.company.projectmgt.api.dto.LoginDto;
 import com.company.projectmgt.api.dto.OtpDto;
 import com.company.projectmgt.api.dto.RegisterDto;
-//import com.company.projectmgt.api.repo.MemberRepository;
+
 import com.company.projectmgt.api.services.UserService;
 import com.company.projectmgt.entity.Member;
 import com.company.projectmgt.wrapper.ResponseWrapper;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 import io.jmix.core.DataManager;
 import io.jmix.rest.annotation.RestHttpMethod;
 import io.jmix.rest.annotation.RestMethod;
-import io.jmix.rest.annotation.RestService;
-import io.jmix.security.role.annotation.ResourceRole;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -29,14 +28,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
+    @GetMapping("/member")
+    public String member(Principal principal) {
+        return principal.getName();
+    }
   @RestMethod(httpMethods =  RestHttpMethod.POST)
   @PostMapping("/register")
 public ResponseWrapper<RegisterDto> register(@RequestBody RegisterDto registerDto) {
     return userService.register(registerDto);
 
 }
-
 
 @GetMapping("/fetchMembers")
 public ResponseWrapper<List<Member>> getData(){
